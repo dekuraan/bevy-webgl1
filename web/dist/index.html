@@ -1,13 +1,30 @@
 <html><head>
     <link rel="stylesheet" href="/style-597d90855083f957.css">
-    <script type="module">import init from '/index-5e684b21ce74295.js';init('/index-5e684b21ce74295_bg.wasm');</script>
+    <script type="module">import init from '/index-d3be4c1025e5c0dc.js';init('/index-d3be4c1025e5c0dc_bg.wasm');</script>
+    
+    <style>
+        body {
+            background: linear-gradient(135deg,
+                    white 0%,
+                    white 49%,
+                    black 49%,
+                    black 51%,
+                    white 51%,
+                    white 100%);
+            background-repeat: repeat;
+            background-size: 20px 20px;
+        }
 
-<link rel="preload" href="/index-5e684b21ce74295_bg.wasm" as="fetch" type="application/wasm" crossorigin="">
-<link rel="modulepreload" href="/index-5e684b21ce74295.js"></head>
+        canvas {
+            background-color: white;
+        }
+    </style>
 
-<body>
-    <canvas id="canvas"></canvas>
 
+<link rel="preload" href="/index-d3be4c1025e5c0dc_bg.wasm" as="fetch" type="application/wasm" crossorigin="">
+<link rel="modulepreload" href="/index-d3be4c1025e5c0dc.js"></head>
+
+<body><canvas id="bevy"></canvas>
 
 <script>(function () {
     var url = 'ws://' + window.location.host + '/_trunk/ws';

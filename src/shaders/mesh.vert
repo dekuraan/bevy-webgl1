@@ -1,14 +1,14 @@
 attribute vec4 a_position;
+attribute vec2 a_texcoord;
 
-uniform vec4 u_color;
 uniform mat4 u_camera;
 uniform mat4 u_model;
 
-varying vec4 v_color;
+varying vec2 v_texcoord;
 
 void main() {
-  // Multiply the position by the matrix.
-  gl_Position = u_camera * (u_model * a_position);
-  // Pass the color to the fragment shader.
-  v_color = u_color;
+  vec4 world_position = u_model * a_position;
+  gl_Position = u_camera * world_position;
+  // set UV
+  v_texcoord = a_texcoord;
 }

@@ -1,4 +1,4 @@
-use wasm_bindgen::JsCast;
+use wasm_bindgen::{prelude::Closure, JsCast};
 use web_sys::{
     Document, HtmlCanvasElement, OesVertexArrayObject, WebGlBuffer, WebGlProgram,
     WebGlRenderingContext as Gl, WebGlShader, Window,
@@ -83,17 +83,14 @@ pub fn get_oes_vao(context: &Gl) -> OesVertexArrayObject {
         .unchecked_into::<OesVertexArrayObject>()
 }
 
-// pub fn render_mesh(context: &Gl, mesh: &Mesh) {
-//     let oes_vao = get_oes_vao(context);
-//     let vao = oes_vao.create_vertex_array_oes().unwrap();
-//     oes_vao.bind_vertex_array_oes(Some(&vao));
-//     context.vertex_attrib_pointer_with_i32(0, 3, Gl::FLOAT, false, 0, 0);
-//     context.enable_vertex_attrib_array(position_attribute_location as u32);
-//     context.draw_arrays(Gl::TRIANGLES, 0);
-// }
-
 pub fn bind_array_buffer(gl: &Gl) -> WebGlBuffer {
     let buffer = gl.create_buffer().unwrap();
     gl.bind_buffer(Gl::ARRAY_BUFFER, Some(&buffer));
     buffer
+}
+
+pub fn request_animation_frame(f: &Closure<dyn FnMut()>) {
+    window()
+        .request_animation_frame(f.as_ref().unchecked_ref())
+        .expect("should register `requestAnimationFrame` OK");
 }
