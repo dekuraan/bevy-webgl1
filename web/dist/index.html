@@ -1,6 +1,6 @@
 <html><head>
     <link rel="stylesheet" href="/style-597d90855083f957.css">
-    <script type="module">import init from '/index-d3be4c1025e5c0dc.js';init('/index-d3be4c1025e5c0dc_bg.wasm');</script>
+    <script type="module">import init from '/render-65fdac779766cd4f.js';init('/render-65fdac779766cd4f_bg.wasm');</script>
     
     <style>
         body {
@@ -21,13 +21,14 @@
     </style>
 
 
-<link rel="preload" href="/index-d3be4c1025e5c0dc_bg.wasm" as="fetch" type="application/wasm" crossorigin="">
-<link rel="modulepreload" href="/index-d3be4c1025e5c0dc.js"></head>
+<link rel="preload" href="/render-65fdac779766cd4f_bg.wasm" as="fetch" type="application/wasm" crossorigin="">
+<link rel="modulepreload" href="/render-65fdac779766cd4f.js"></head>
 
 <body><canvas id="bevy"></canvas>
 
 <script>(function () {
-    var url = 'ws://' + window.location.host + '/_trunk/ws';
+    var protocol = window.location.protocol === 'https:' ? 'wss:' : 'ws:';
+    var url = protocol + '//' + window.location.host + '/_trunk/ws';
     var poll_interval = 5000;
     var reload_upon_connect = () => {
         window.setTimeout(

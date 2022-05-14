@@ -42,6 +42,3 @@ path = "src/bin.rs"
 [[bin]]
 name = "test-bin"
 path = "src/test_bin.rs"
-
-# [[example]]
-# name = "test"

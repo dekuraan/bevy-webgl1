@@ -4,7 +4,7 @@ use bevy_webgl1::Webgl1RenderingPlugin;
 fn main() {
     console_error_panic_hook::set_once();
     App::new()
-        // .add_plugin(Webgl1RenderingPlugin)
+        .add_plugin(Webgl1RenderingPlugin)
         .insert_resource(WindowDescriptor {
             canvas: Some("#bevy".to_string()),
             ..Default::default()

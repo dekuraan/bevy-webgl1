@@ -83,7 +83,7 @@ pub fn get_oes_vao(context: &Gl) -> OesVertexArrayObject {
         .unchecked_into::<OesVertexArrayObject>()
 }
 
-pub fn bind_array_buffer(gl: &Gl) -> WebGlBuffer {
+pub fn create_and_bind_array_buffer(gl: &Gl) -> WebGlBuffer {
     let buffer = gl.create_buffer().unwrap();
     gl.bind_buffer(Gl::ARRAY_BUFFER, Some(&buffer));
     buffer
