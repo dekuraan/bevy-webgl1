@@ -86,11 +86,15 @@ fn draw_meshes_system(
     }
     //draw_meshes
     //TODO (perf) draw meshes instanced
-
-    for (mesh_gtf, mesh, material) in meshes.iter() {
+    use itertools::Itertools;
+    let models_map = meshes
+        .iter()
+        .into_group_map_by(|(tf, mesh, mat)| (mesh.id, mat.id));
+    for key in models_map.keys() {
+        let (mesh, material) = key;
         //set up texture
         {
-            let image = if let Some(material) = material_storage.get(material) {
+            let image = if let Some(material) = material_storage.get(*material) {
                 if let Some(image) =
                     image_storage.get(material.base_color_texture.as_ref().unwrap())
                 {
@@ -123,7 +127,7 @@ fn draw_meshes_system(
         }
         //Do mesh
         let indices_len = {
-            let mesh = if let Some(mesh) = mesh_storage.get(mesh) {
+            let mesh = if let Some(mesh) = mesh_storage.get(*mesh) {
                 mesh
             } else {
                 continue;
@@ -198,17 +202,19 @@ fn draw_meshes_system(
                 indices.len()
             }
         };
-        // set model uniform
-        {
-            let transform = mesh_gtf;
-            let matrix = transform.compute_matrix();
-            gl.uniform_matrix4fv_with_f32_array(
-                Some(&model_location),
-                false,
-                &matrix.to_cols_array(),
-            );
+        for (tf, _, _) in models_map.get(key).unwrap() {
+            // set model uniform
+            {
+                let transform = tf;
+                let matrix = transform.compute_matrix();
+                gl.uniform_matrix4fv_with_f32_array(
+                    Some(&model_location),
+                    false,
+                    &matrix.to_cols_array(),
+                );
+            }
+            //draw
+            gl.draw_elements_with_i32(Gl::TRIANGLES, indices_len as i32, Gl::UNSIGNED_SHORT, 0);
         }
-        //draw
-        gl.draw_elements_with_i32(Gl::TRIANGLES, indices_len as i32, Gl::UNSIGNED_SHORT, 0);
     }
 }
