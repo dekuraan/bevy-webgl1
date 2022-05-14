@@ -2,7 +2,9 @@ use bevy::{prelude::*, render::options::WgpuOptions};
 use js_sys::{Float32Array, Uint16Array, Uint8Array};
 use util::*;
 use wasm_bindgen::{JsCast, JsValue};
-use web_sys::{HtmlCanvasElement, WebGlBuffer, WebGlProgram, WebGlRenderingContext as Gl};
+use web_sys::{
+    HtmlCanvasElement, WebGlBuffer, WebGlProgram, WebGlRenderingContext as Gl, WebGlTexture,
+};
 pub mod util;
 
 pub struct Webgl1RenderingPlugin;
@@ -22,10 +24,12 @@ impl Plugin for Webgl1RenderingPlugin {
         let position_buffer = gl.create_buffer().unwrap();
         let uv_buffer = gl.create_buffer().unwrap();
         let index_buffer = gl.create_buffer().unwrap();
+        let texture = gl.create_texture().unwrap();
         app.insert_non_send_resource(Buffers {
             position_buffer,
             uv_buffer,
             index_buffer,
+            texture,
         });
         app.insert_resource(WindowDescriptor {
             canvas: Some("#bevy".to_string()),
@@ -43,6 +47,7 @@ struct Buffers {
     position_buffer: WebGlBuffer,
     uv_buffer: WebGlBuffer,
     index_buffer: WebGlBuffer,
+    texture: WebGlTexture,
 }
 
 fn draw_meshes_system(
@@ -98,8 +103,8 @@ fn draw_meshes_system(
             };
             let width = image.texture_descriptor.size.width;
             let height = image.texture_descriptor.size.height;
-            let texture = gl.create_texture().unwrap();
-            gl.bind_texture(Gl::TEXTURE_2D, Some(&texture));
+            let texture = &buffers.texture;
+            gl.bind_texture(Gl::TEXTURE_2D, Some(texture));
             let array = Uint8Array::new_with_length(image.data.len() as u32);
             array.copy_from(&image.data);
             gl.tex_image_2d_with_i32_and_i32_and_i32_and_format_and_type_and_opt_array_buffer_view(
